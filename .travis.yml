@@ -2,4 +2,4 @@ language: node.js
 node_js:
   - latest
 
-script: make lint
+script: make lint test
