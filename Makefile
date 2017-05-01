@@ -1,5 +1,3 @@
-# install: install-deps install-flow-typed
-
 install: install-deps 
 
 run:
@@ -7,9 +5,6 @@ run:
 
 install-deps:
 	yarn
-
-# install-flow-typed:
-# 	npm run flow-typed install
 
 build:
 	rm -rf dist
@@ -20,9 +15,6 @@ test:
 
 test-watch:
 	npm run testwatch
-
-# check-types:
-# 	npm run flow
 
 lint:
 	npm run eslint -- src __tests__
