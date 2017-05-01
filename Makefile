@@ -25,7 +25,7 @@ test-watch:
 # 	npm run flow
 
 lint:
-	npm run eslint -- src
+	npm run eslint -- src __tests__
 
 publish:
 	npm publish
