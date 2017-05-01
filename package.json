@@ -1,0 +1,37 @@
+{
+  "name": "config-diff",
+  "version": "0.0.1",
+  "description": "The CLI for finding differences in configuration files and creating patches",
+  "main": "dist/index.js",
+  "bin": {
+    "gendiff": "dist/bin/gendiff.js"
+  },
+  "scripts": {
+    "test": "jest",
+    "testwatch": "jest --watch",
+    "babel-node": "babel-node",
+    "eslint": "eslint",
+    "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
+    "prepublish": "npm run build"
+  },
+  "repository": "https://github.com/antonshwab/project-lvl2-s93.git",
+  "author": "Anton Shvab <shwab.ay@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "*"
+  },
+  "devDependencies": {
+    "babel-cli": "*",
+    "babel-core": "*",
+    "babel-eslint": "*",
+    "babel-plugin-transform-runtime": "*",
+    "babel-preset-env": "*",
+    "babel-preset-stage-0": "*",
+    "debug": "*",
+    "eslint": "*",
+    "eslint-config-airbnb-base": "*",
+    "eslint-plugin-import": "*",
+    "eslint-plugin-jest": "*",
+    "jest": "*"
+  }
+}
