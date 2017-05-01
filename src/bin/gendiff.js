@@ -9,5 +9,4 @@ program
   .option('-f, --format [type]', 'output format')
   .parse(process.argv);
 
-if (!program.args.length) program.help();
 
