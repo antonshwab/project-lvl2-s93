@@ -17,7 +17,7 @@ test('empty configs', () => {
 test('same', () => {
   const fstConfig = `${path}fst.json`;
   const sndConfig = `${path}reversedFst.json`;
-  const result = fs.readFileSync(`${path}reversedDiff.txt`, 'utf-8');
+  const result = fs.readFileSync(`${path}sameDiff.txt`, 'utf-8');
   expect(genDiff(fstConfig, sndConfig)).toBe(result);
 });
 
