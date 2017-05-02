@@ -2,15 +2,15 @@ import fs from 'fs';
 import path from 'path';
 import getParseMethod from './parsers/parsers';
 
-const readConfigFile = (configPath) => {
-  const extname = path.parse(configPath).ext;
+const readConfFile = (confPath) => {
+  const extname = path.parse(confPath).ext;
   const dottlessExtname = extname.substr(1);
-  const string = fs.readFileSync(configPath, 'utf-8');
+  const string = fs.readFileSync(confPath, 'utf-8');
   return { string, extname: dottlessExtname };
 };
 
-const getData = (configObj) => {
-  const { string, extname } = configObj;
+const getData = (confObj) => {
+  const { string, extname } = confObj;
   const parse = getParseMethod(extname);
   return parse(string);
 };
@@ -35,13 +35,13 @@ const getDiffStrings = (fstData, sndData) => {
 const getFormatDiff = diffStrings => ['{\n', ...diffStrings.map(s => `  ${s}\n`), '}'].join('');
 
 const genDiff = (fstPath, sndPath) => {
-  const fstConfigObj = readConfigFile(fstPath);
-  const sndConfigObj = readConfigFile(sndPath);
+  const fstConfObj = readConfFile(fstPath);
+  const sndConfObj = readConfFile(sndPath);
 
-  const fstConfigData = getData(fstConfigObj);
-  const sndConfigData = getData(sndConfigObj);
+  const fstConfData = getData(fstConfObj);
+  const sndConfData = getData(sndConfObj);
 
-  const diffStrings = getDiffStrings(fstConfigData, sndConfigData);
+  const diffStrings = getDiffStrings(fstConfData, sndConfData);
 
   const formattedDiff = getFormatDiff(diffStrings);
 
