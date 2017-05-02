@@ -16,7 +16,7 @@ const parse = (configPath) => {
   if (extname === '.ini') {
     return ini.parse(configString);
   }
-  return new Error(`${extname} extension is not supported!`);
+  throw new Error(`${extname} extension is not supported!`);
 };
 
 const genDiff = (fstPath, sndPath) => {
