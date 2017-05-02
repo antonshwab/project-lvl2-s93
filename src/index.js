@@ -1,33 +1,33 @@
 import fs from 'fs';
 
 const genDiff = (fstPath, sndPath) => {
-  const isEmptyBefore = fs.statSync(fstPath).size === 0;
-  const isEmptyAfter = fs.statSync(sndPath).size === 0;
+  const isEmptyFst = fs.statSync(fstPath).size === 0;
+  const isEmptySnd = fs.statSync(sndPath).size === 0;
 
-  if (isEmptyAfter && isEmptyBefore) return '';
+  if (isEmptySnd && isEmptyFst) return '';
 
-  const beforeConfig = isEmptyBefore ? {} : JSON.parse(fs.readFileSync(fstPath, 'utf-8'));
-  const afterConfig = isEmptyAfter ? {} : JSON.parse(fs.readFileSync(sndPath, 'utf-8'));
+  const fstConfig = isEmptyFst ? {} : JSON.parse(fs.readFileSync(fstPath, 'utf-8'));
+  const sndConfig = isEmptySnd ? {} : JSON.parse(fs.readFileSync(sndPath, 'utf-8'));
 
-  const beforeKeys = Object.keys(beforeConfig);
-  const afterKeys = Object.keys(afterConfig);
+  const unionKeys = Object.keys(Object.assign({}, fstConfig, sndConfig));
 
-  const diffStrings = beforeKeys.reduce(
+  const diffStrings = unionKeys.reduce(
     (acc, key) => {
-      if (beforeConfig[key] === afterConfig[key]) {
-        return [...acc, `  ${key}: ${beforeConfig[key]}`];
+      if (fstConfig[key] === sndConfig[key]) {
+        acc.push(`  ${key}: ${fstConfig[key]}`);
+        return acc;
       }
-      if (!afterConfig[key]) {
-        return [...acc, `- ${key}: ${beforeConfig[key]}`];
+      if (!sndConfig[key]) {
+        acc.push(`- ${key}: ${fstConfig[key]}`);
+        return acc;
       }
-      return [...acc, `+ ${key}: ${afterConfig[key]}`, `- ${key}: ${beforeConfig[key]}`];
-    },
-    []);
-
-  const newKeys = afterKeys.filter(k => !beforeKeys.includes(k));
-  const additions = newKeys.reduce((acc, key) => [...acc, `+ ${key}: ${afterConfig[key]}`], []);
-
-  diffStrings.push(...additions);
+      if (!fstConfig[key] && sndConfig[key]) {
+        acc.push(`+ ${key}: ${sndConfig[key]}`);
+        return acc;
+      }
+      acc.push(`+ ${key}: ${sndConfig[key]}`, `- ${key}: ${fstConfig[key]}`);
+      return acc;
+    }, []);
 
   const diff = ['{\n', ...diffStrings.map(s => `  ${s}\n`), '}'].join('');
 
