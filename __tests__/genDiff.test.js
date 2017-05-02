@@ -4,6 +4,7 @@ import genDiff from '../src/';
 
 const dirJson = '__tests__/__fixtures__/json/';
 const dirYaml = '__tests__/__fixtures__/yaml/';
+const dirIni = '__tests__/__fixtures__/ini/';
 
 describe('json configs', () => {
   test('empty configs', () => {
@@ -36,6 +37,16 @@ describe('yaml configs', () => {
     const fstPath = path.join(dirYaml, 'fst.yaml');
     const sndPath = path.join(dirYaml, 'snd.yaml');
     const resultPath = path.join(dirYaml, 'diff.txt');
+    const result = fs.readFileSync(resultPath, 'utf-8');
+    expect(genDiff(fstPath, sndPath)).toBe(result);
+  });
+});
+
+describe('ini configs', () => {
+  test('diff flat configs', () => {
+    const fstPath = path.join(dirIni, 'fst.ini');
+    const sndPath = path.join(dirIni, 'snd.ini');
+    const resultPath = path.join(dirIni, 'diff.txt');
     const result = fs.readFileSync(resultPath, 'utf-8');
     expect(genDiff(fstPath, sndPath)).toBe(result);
   });
