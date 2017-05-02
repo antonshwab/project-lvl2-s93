@@ -4,8 +4,6 @@ const genDiff = (fstPath, sndPath) => {
   const isEmptyFst = fs.statSync(fstPath).size === 0;
   const isEmptySnd = fs.statSync(sndPath).size === 0;
 
-  if (isEmptySnd && isEmptyFst) return '';
-
   const fstConfig = isEmptyFst ? {} : JSON.parse(fs.readFileSync(fstPath, 'utf-8'));
   const sndConfig = isEmptySnd ? {} : JSON.parse(fs.readFileSync(sndPath, 'utf-8'));
 
@@ -29,9 +27,9 @@ const genDiff = (fstPath, sndPath) => {
       return acc;
     }, []);
 
-  const diff = ['{\n', ...diffStrings.map(s => `  ${s}\n`), '}'].join('');
+  const formattedDiff = ['{\n', ...diffStrings.map(s => `  ${s}\n`), '}'].join('');
 
-  return diff;
+  return formattedDiff;
 };
 
 export default genDiff;
