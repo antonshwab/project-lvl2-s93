@@ -1,49 +1,49 @@
 import fs from 'fs';
 import path from 'path';
-import yaml from 'js-yaml';
-import ini from 'ini';
+import getParseMethod from './parsers/parsers';
 
-const parse = (configPath) => {
-  const isEmptyConfig = fs.statSync(configPath).size === 0;
-  const configString = isEmptyConfig ? '{}' : fs.readFileSync(configPath, 'utf-8');
+const readConfigFile = (configPath) => {
   const extname = path.parse(configPath).ext;
-  if (extname === '.json') {
-    return JSON.parse(configString);
-  }
-  if (extname === '.yaml') {
-    return yaml.safeLoad(configString);
-  }
-  if (extname === '.ini') {
-    return ini.parse(configString);
-  }
-  throw new Error(`${extname} extension is not supported!`);
+  const dottlessExtname = extname.substr(1);
+  const string = fs.readFileSync(configPath, 'utf-8');
+  return { string, extname: dottlessExtname };
 };
 
-const genDiff = (fstPath, sndPath) => {
-  const fstConfig = parse(fstPath);
-  const sndConfig = parse(sndPath);
+const getData = (configObj) => {
+  const { string, extname } = configObj;
+  const parse = getParseMethod(extname);
+  return parse(string);
+};
 
-  const unionKeys = Object.keys(Object.assign({}, fstConfig, sndConfig));
-
-  const diffStrings = unionKeys.reduce(
+const getDiffStrings = (fstData, sndData) => {
+  const unionKeys = Object.keys(Object.assign({}, fstData, sndData));
+  return unionKeys.reduce(
     (acc, key) => {
-      if (fstConfig[key] === sndConfig[key]) {
-        acc.push(`  ${key}: ${fstConfig[key]}`);
-        return acc;
+      if (fstData[key] === sndData[key]) {
+        return [...acc, `  ${key}: ${fstData[key]}`];
       }
-      if (!sndConfig[key]) {
-        acc.push(`- ${key}: ${fstConfig[key]}`);
-        return acc;
+      if (!sndData[key]) {
+        return [...acc, `- ${key}: ${fstData[key]}`];
       }
-      if (!fstConfig[key] && sndConfig[key]) {
-        acc.push(`+ ${key}: ${sndConfig[key]}`);
-        return acc;
+      if (!fstData[key] && sndData[key]) {
+        return [...acc, `+ ${key}: ${sndData[key]}`];
       }
-      acc.push(`+ ${key}: ${sndConfig[key]}`, `- ${key}: ${fstConfig[key]}`);
-      return acc;
+      return [...acc, `+ ${key}: ${sndData[key]}`, `- ${key}: ${fstData[key]}`];
     }, []);
+};
 
-  const formattedDiff = ['{\n', ...diffStrings.map(s => `  ${s}\n`), '}'].join('');
+const getFormatDiff = diffStrings => ['{\n', ...diffStrings.map(s => `  ${s}\n`), '}'].join('');
+
+const genDiff = (fstPath, sndPath) => {
+  const fstConfigObj = readConfigFile(fstPath);
+  const sndConfigObj = readConfigFile(sndPath);
+
+  const fstConfigData = getData(fstConfigObj);
+  const sndConfigData = getData(sndConfigObj);
+
+  const diffStrings = getDiffStrings(fstConfigData, sndConfigData);
+
+  const formattedDiff = getFormatDiff(diffStrings);
 
   return formattedDiff;
 };
