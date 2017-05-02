@@ -1,11 +1,22 @@
 import fs from 'fs';
+import path from 'path';
+import yaml from 'js-yaml';
+
+const parse = (configPath) => {
+  const isEmptyConfig = fs.statSync(configPath).size === 0;
+  const extname = path.parse(configPath).ext;
+  if (extname === '.json') {
+    return isEmptyConfig ? {} : JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+  }
+  if (extname === '.yaml') {
+    return isEmptyConfig ? {} : yaml.safeLoad(fs.readFileSync(configPath, 'utf-8'));
+  }
+  return new Error(`${extname} extension is not supported!`);
+};
 
 const genDiff = (fstPath, sndPath) => {
-  const isEmptyFst = fs.statSync(fstPath).size === 0;
-  const isEmptySnd = fs.statSync(sndPath).size === 0;
-
-  const fstConfig = isEmptyFst ? {} : JSON.parse(fs.readFileSync(fstPath, 'utf-8'));
-  const sndConfig = isEmptySnd ? {} : JSON.parse(fs.readFileSync(sndPath, 'utf-8'));
+  const fstConfig = parse(fstPath);
+  const sndConfig = parse(sndPath);
 
   const unionKeys = Object.keys(Object.assign({}, fstConfig, sndConfig));
 
