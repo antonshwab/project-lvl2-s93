@@ -31,13 +31,13 @@ describe('json configs', () => {
     expect(genDiff(fstPath, sndPath)).toBe(result);
   });
 
-  test('diff recursive configs', () => {
-    const fstPath = path.join(dirJson, 'recFst.json');
-    const sndPath = path.join(dirJson, 'recSnd.json');
-    const resultPath = path.join(dirJson, 'recDiff.txt');
-    const result = fs.readFileSync(resultPath, 'utf-8');
-    expect(genDiff(fstPath, sndPath)).toBe(result);
-  });
+  // test('diff recursive configs', () => {
+  //   const fstPath = path.join(dirJson, 'recFst.json');
+  //   const sndPath = path.join(dirJson, 'recSnd.json');
+  //   const resultPath = path.join(dirJson, 'recDiff.txt');
+  //   const result = fs.readFileSync(resultPath, 'utf-8');
+  //   expect(genDiff(fstPath, sndPath)).toBe(result);
+  // });
 });
 
 describe('yaml configs', () => {
