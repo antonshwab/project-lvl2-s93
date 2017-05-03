@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import _ from 'lodash';
 import getParser from './parsers';
 
 const readConfFile = (confPath) => {
@@ -16,7 +17,9 @@ const getData = (confObj) => {
 };
 
 const getDiffStrings = (fstData, sndData) => {
-  const unionKeys = Object.keys(Object.assign({}, fstData, sndData));
+  const fstKeys = Object.keys(fstData);
+  const sndKeys = Object.keys(sndData);
+  const unionKeys = _.union(fstKeys, sndKeys);
   return unionKeys.reduce(
     (acc, key) => {
       if (fstData[key] === sndData[key]) {
