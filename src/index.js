@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import getParseMethod from './parsers/parsers';
+import getParser from './parsers';
 
 const readConfFile = (confPath) => {
   const extname = path.parse(confPath).ext;
@@ -11,8 +11,8 @@ const readConfFile = (confPath) => {
 
 const getData = (confObj) => {
   const { string, extname } = confObj;
-  const parse = getParseMethod(extname);
-  return parse(string);
+  const parser = getParser(extname);
+  return parser(string);
 };
 
 const getDiffStrings = (fstData, sndData) => {
