@@ -20,14 +20,14 @@ const getData = (confObj) => {
 const getSimpleAST = (item) => {
   if (_.isArray(item)) {
     const elements = item.map(el => getSimpleAST(el));
-    return { type: 'array', status: 'pass', elements };
+    return { type: 'array', tag: 'passed', elements };
   }
   if (_.isPlainObject(item)) {
     const props = Object.keys(item)
-      .map(key => ({ type: 'property', status: 'pass', key, value: getSimpleAST(item[key]) }));
-    return { type: 'object', status: 'pass', props };
+      .map(key => ({ type: 'property', tag: 'passed', key, value: getSimpleAST(item[key]) }));
+    return { type: 'object', tag: 'passed', props };
   }
-  return { type: 'literal', status: 'pass', value: item };
+  return { type: 'literal', tag: 'passed', value: item };
 };
 
 const getDiffAST = (fstData, sndData) => {
@@ -41,34 +41,34 @@ const getDiffAST = (fstData, sndData) => {
       if (_.isPlainObject(fstValue) && _.isPlainObject(sndValue)) {
         return {
           type: 'property',
-          status: 'pass',
+          tag: 'passed',
           key,
           value: getDiffAST(fstValue, sndValue) };
       }
       if (_.isEqual(fstValue, sndValue)) {
         return {
           type: 'property',
-          status: 'equal',
+          tag: 'equal',
           key,
           value: getSimpleAST(fstValue) };
       }
       if (!fstValue && sndValue) {
         return {
           type: 'property',
-          status: 'add',
+          tag: 'added',
           key,
           value: getSimpleAST(sndValue) };
       }
       if (fstValue && !sndValue) {
         return {
           type: 'property',
-          status: 'remove',
+          tag: 'removed',
           key,
           value: getSimpleAST(fstValue) };
       }
       return {
         type: 'property',
-        status: 'change',
+        tag: 'updated',
         key,
         valueBefore: getSimpleAST(fstValue),
         valueAfter: getSimpleAST(sndValue) };
@@ -86,7 +86,6 @@ const genDiff = (fstPath, sndPath) => {
 
   const ast = getDiffAST(fstConfData, sndConfData);
   const formattedDiff = format(ast);
-  console.log(formattedDiff);
   return formattedDiff;
 };
 

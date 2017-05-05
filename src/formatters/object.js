@@ -6,15 +6,15 @@ const formatObject = (obj, opt) => {
   const prevSpace = ' '.repeat(Number(spaceSize) - 2);
   const propsStrings = obj.props.map(
     (prop) => {
-      if (prop.status === 'change') {
+      if (prop.tag === 'updated') {
         const stringValueAfter =
           formatAST(prop.valueAfter, { ...opt, spaceSize: spaceSize + 4 });
         const stringValueBefore =
           formatAST(prop.valueBefore, { ...opt, spaceSize: spaceSize + 4 });
-        return `\n${space}${prefix.change.after}${prop.key}: ${stringValueAfter}`
-          + `\n${space}${prefix.change.before}${prop.key}: ${stringValueBefore}`;
+        return `\n${space}${prefix.updated.after}${prop.key}: ${stringValueAfter}`
+          + `\n${space}${prefix.updated.before}${prop.key}: ${stringValueBefore}`;
       }
-      return `\n${space}${prefix[prop.status]}${prop.key}: ${formatAST(prop.value, { ...opt, spaceSize: spaceSize + 4 })}`;
+      return `\n${space}${prefix[prop.tag]}${prop.key}: ${formatAST(prop.value, { ...opt, spaceSize: spaceSize + 4 })}`;
     });
   return ['{', ...propsStrings, `\n${prevSpace}}`].join('');
 };

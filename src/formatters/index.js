@@ -7,11 +7,11 @@ const formatters = { object, array, literal };
 const getFormatter = type => formatters[type];
 
 const prefix = {
-  pass: '  ',
+  passed: '  ',
   equal: '  ',
-  add: '+ ',
-  remove: '- ',
-  change: { before: '- ', after: '+ ' },
+  added: '+ ',
+  removed: '- ',
+  updated: { before: '- ', after: '+ ' },
 };
 
 const options = { spaceSize: 2, prefix };
