@@ -1065,6 +1065,15 @@ concat-stream@^1.5.2:
     readable-stream "^2.2.2"
     typedarray "^0.0.6"
 
+config-diff@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/config-diff/-/config-diff-0.1.0.tgz#fd7386e31c2e6ceea3db4946aea35b05cd99827e"
+  dependencies:
+    commander "*"
+    ini "^1.3.4"
+    js-yaml "^3.8.3"
+    lodash "^4.17.4"
+
 console-control-strings@^1.0.0, console-control-strings@~1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/console-control-strings/-/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
@@ -1378,7 +1387,7 @@ esprima@^2.7.1:
   version "2.7.3"
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-2.7.3.tgz#96e3b70d5779f6ad49cd032673d1c312767ba581"
 
-esprima@^3.1.1, esprima@^3.1.3:
+esprima@^3.1.1:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-3.1.3.tgz#fdca51cee6133895e3c88d535ce49dbff62a4633"
 

@@ -20,14 +20,14 @@ const getData = (confObj) => {
 const getSimpleAST = (item) => {
   if (_.isArray(item)) {
     const elements = item.map(el => getSimpleAST(el));
-    return { type: 'array', elements };
+    return { dataType: 'array', elements };
   }
   if (_.isPlainObject(item)) {
     const props = Object.keys(item)
-      .map(key => ({ type: 'property', tag: 'nested', key, value: getSimpleAST(item[key]) }));
-    return { type: 'object', props };
+      .map(key => ({ dataType: 'property', type: 'nested', key, value: getSimpleAST(item[key]) }));
+    return { dataType: 'object', props };
   }
-  return { type: 'literal', value: item };
+  return { dataType: 'literal', value: item };
 };
 
 const getDiffAST = (fstData, sndData) => {
@@ -40,40 +40,40 @@ const getDiffAST = (fstData, sndData) => {
       const sndValue = sndData[key];
       if (_.isPlainObject(fstValue) && _.isPlainObject(sndValue)) {
         return {
-          type: 'property',
-          tag: 'nested',
+          dataType: 'property',
+          type: 'nested',
           key,
           value: getDiffAST(fstValue, sndValue) };
       }
       if (_.isEqual(fstValue, sndValue)) {
         return {
-          type: 'property',
-          tag: 'equal',
+          dataType: 'property',
+          type: 'equal',
           key,
           value: getSimpleAST(fstValue) };
       }
       if (!fstValue && sndValue) {
         return {
-          type: 'property',
-          tag: 'added',
+          dataType: 'property',
+          type: 'added',
           key,
           value: getSimpleAST(sndValue) };
       }
       if (fstValue && !sndValue) {
         return {
-          type: 'property',
-          tag: 'removed',
+          dataType: 'property',
+          type: 'removed',
           key,
           value: getSimpleAST(fstValue) };
       }
       return {
-        type: 'property',
-        tag: 'updated',
+        dataType: 'property',
+        type: 'updated',
         key,
         valueBefore: getSimpleAST(fstValue),
         valueAfter: getSimpleAST(sndValue) };
     });
-  const ast = { type: 'object', props };
+  const ast = { dataType: 'object', props };
   return ast;
 };
 
