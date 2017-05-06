@@ -55,6 +55,14 @@ describe('json configs', () => {
     const result = fs.readFileSync(resultPath, 'utf-8');
     expect(genDiff(fstPath, sndPath, 'plain')).toBe(result);
   });
+
+  test('json diff nested configs', () => {
+    const fstPath = path.join(dirJson, 'nestedFst.json');
+    const sndPath = path.join(dirJson, 'nestedSnd.json');
+    const resultPath = path.join(dirDiff, 'nestedJsonDiff.json');
+    const result = JSON.parse(fs.readFileSync(resultPath, 'utf-8'));
+    expect(genDiff(fstPath, sndPath, 'json')).toEqual(result);
+  });
 });
 
 describe('yaml configs', () => {
