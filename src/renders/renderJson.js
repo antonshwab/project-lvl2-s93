@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 const prefix = {
   nested: '  ',
   equal: '  ',
