@@ -6,9 +6,9 @@ const parsers = { json, ini, yaml, yml: yaml };
 
 const getParser = (extname) => {
   const parser = parsers[extname];
-  if (!parser) {
-    throw new Error(`${extname} extension is not supported!`);
-  }
+  // if (!parser) {
+  //   throw new Error(`${extname} extension is not supported!`);
+  // }
   return parser;
 };
 
