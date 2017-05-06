@@ -1,5 +1,5 @@
 const prefix = {
-  passed: '  ',
+  nested: '  ',
   equal: '  ',
   added: '+ ',
   removed: '- ',

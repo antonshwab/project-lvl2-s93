@@ -16,7 +16,7 @@ const getDiffPhrase = (prop) => {
 const renderPlain = (ast, parentsKeys = []) => {
   const propsStrings = ast.props.map(
     (prop) => {
-      if (prop.tag === 'passed') {
+      if (prop.tag === 'nested') {
         return renderPlain(prop.value, [...parentsKeys, prop.key]);
       }
       return `Property '${[...parentsKeys, prop.key].join('.')}' ${getDiffPhrase(prop)}`;

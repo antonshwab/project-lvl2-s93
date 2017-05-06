@@ -3,7 +3,7 @@ import plain from './renderPlain';
 
 const renders = { tree, plain };
 
-export default (ast, view) => {
-  const render = renders[view];
+export default (ast, format) => {
+  const render = renders[format];
   return render(ast);
 };
