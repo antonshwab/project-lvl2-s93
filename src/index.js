@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import _ from 'lodash';
 import getParser from './parsers';
-import format from './formatters';
+import render from './renders';
 
 const readConfFile = (confPath) => {
   const extname = path.parse(confPath).ext;
@@ -20,14 +20,14 @@ const getData = (confObj) => {
 const getSimpleAST = (item) => {
   if (_.isArray(item)) {
     const elements = item.map(el => getSimpleAST(el));
-    return { type: 'array', tag: 'passed', elements };
+    return { type: 'array', elements };
   }
   if (_.isPlainObject(item)) {
     const props = Object.keys(item)
-      .map(key => ({ type: 'property', tag: 'passed', key, value: getSimpleAST(item[key]) }));
-    return { type: 'object', tag: 'passed', props };
+      .map(key => ({ type: 'property', tag: 'nested', key, value: getSimpleAST(item[key]) }));
+    return { type: 'object', props };
   }
-  return { type: 'literal', tag: 'passed', value: item };
+  return { type: 'literal', value: item };
 };
 
 const getDiffAST = (fstData, sndData) => {
@@ -41,7 +41,7 @@ const getDiffAST = (fstData, sndData) => {
       if (_.isPlainObject(fstValue) && _.isPlainObject(sndValue)) {
         return {
           type: 'property',
-          tag: 'passed',
+          tag: 'nested',
           key,
           value: getDiffAST(fstValue, sndValue) };
       }
@@ -77,7 +77,7 @@ const getDiffAST = (fstData, sndData) => {
   return ast;
 };
 
-const genDiff = (fstPath, sndPath) => {
+const genDiff = (fstPath, sndPath, format = 'tree') => {
   const fstConfObj = readConfFile(fstPath);
   const sndConfObj = readConfFile(sndPath);
 
@@ -85,8 +85,7 @@ const genDiff = (fstPath, sndPath) => {
   const sndConfData = getData(sndConfObj);
 
   const ast = getDiffAST(fstConfData, sndConfData);
-  const formattedDiff = format(ast);
-  return formattedDiff;
+  return render(ast, format);
 };
 
 export default genDiff;
