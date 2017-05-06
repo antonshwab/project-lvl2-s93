@@ -1,6 +1,6 @@
 {
   "name": "config-diff",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "The CLI for finding differences in configuration files and creating patches",
   "main": "dist/index.js",
   "bin": {
