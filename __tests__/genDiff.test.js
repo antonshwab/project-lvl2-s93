@@ -39,6 +39,22 @@ describe('json configs', () => {
     const result = fs.readFileSync(resultPath, 'utf-8');
     expect(genDiff(fstPath, sndPath)).toBe(result);
   });
+
+  test('plain diff flat configs', () => {
+    const fstPath = path.join(dirJson, 'flatFst.json');
+    const sndPath = path.join(dirJson, 'flatSnd.json');
+    const resultPath = path.join(dirDiff, 'flatPlainDiff.txt');
+    const result = fs.readFileSync(resultPath, 'utf-8');
+    expect(genDiff(fstPath, sndPath, 'plain')).toBe(result);
+  });
+
+  test('plain diff nested configs', () => {
+    const fstPath = path.join(dirJson, 'nestedFst.json');
+    const sndPath = path.join(dirJson, 'nestedSnd.json');
+    const resultPath = path.join(dirDiff, 'nestedPlainDiff.txt');
+    const result = fs.readFileSync(resultPath, 'utf-8');
+    expect(genDiff(fstPath, sndPath, 'plain')).toBe(result);
+  });
 });
 
 describe('yaml configs', () => {
@@ -56,6 +72,13 @@ describe('yaml configs', () => {
     const result = fs.readFileSync(resultPath, 'utf-8');
     expect(genDiff(fstPath, sndPath)).toBe(result);
   });
+  test('plain diff nested configs', () => {
+    const fstPath = path.join(dirYaml, 'nestedFst.yaml');
+    const sndPath = path.join(dirYaml, 'nestedSnd.yaml');
+    const resultPath = path.join(dirDiff, 'nestedPlainDiff.txt');
+    const result = fs.readFileSync(resultPath, 'utf-8');
+    expect(genDiff(fstPath, sndPath, 'plain')).toBe(result);
+  });
 });
 
 describe('ini configs', () => {
@@ -72,6 +95,13 @@ describe('ini configs', () => {
     const resultPath = path.join(dirDiff, 'nestedDiff.txt');
     const result = fs.readFileSync(resultPath, 'utf-8');
     expect(genDiff(fstPath, sndPath)).toBe(result);
+  });
+  test('plain diff nested configs', () => {
+    const fstPath = path.join(dirIni, 'nestedFst.ini');
+    const sndPath = path.join(dirIni, 'nestedSnd.ini');
+    const resultPath = path.join(dirDiff, 'nestedPlainDiff.txt');
+    const result = fs.readFileSync(resultPath, 'utf-8');
+    expect(genDiff(fstPath, sndPath, 'plain')).toBe(result);
   });
 });
 
