@@ -27,7 +27,7 @@ const getSimpleAST = (item) => {
       .map(key => ({ dataType: 'property', type: 'nested', key, value: getSimpleAST(item[key]) }));
     return { dataType: 'object', props };
   }
-  return { dataType: 'literal', value: item };
+  return { dataType: 'literal', type: 'passed', value: item };
 };
 
 const getDiffAST = (fstData, sndData) => {
